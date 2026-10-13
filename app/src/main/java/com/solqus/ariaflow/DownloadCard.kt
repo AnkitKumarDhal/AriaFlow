@@ -50,7 +50,6 @@ fun DownloadCard(
             modifier = Modifier.padding(18.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Filename, downloaded size, speed and percentage.
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -116,7 +115,6 @@ fun DownloadCard(
                 }
             }
 
-            // Visual representation of download progress.
             LinearProgressIndicator(
                 progress = { item.progress.coerceIn(0f, 1f) },
                 modifier = Modifier
@@ -127,7 +125,6 @@ fun DownloadCard(
                 drawStopIndicator = {}
             )
 
-            // Status and pause/resume action.
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,

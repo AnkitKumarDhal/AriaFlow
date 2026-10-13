@@ -11,11 +11,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,8 +36,21 @@ private val Accent = Color(0xFF9B4D96)
 
 @Composable
 fun DownloadsScreen() {
+    var sampleDownload by remember {
+        mutableStateOf(
+            DownloadItem(
+                id = 1,
+                name = "android-studio-2026.1.tar.gz",
+                totalBytes = 1800L * 1024 * 1024,
+                downloadedBytes = 1116L * 1024 * 1024,
+                speedBytesPerSecond = 8408L * 1024,
+                isPaused = false
+            )
+        )
+    }
+
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().statusBarsPadding(),
         color = PageBackground
     ) {
         Column(
@@ -41,6 +59,16 @@ fun DownloadsScreen() {
         ) {
             AppHeader()
             TransferOverview()
+            Spacer(modifier = Modifier.height(16.dp))
+            DownloadCard(
+                item = sampleDownload,
+                onPauseResume = {
+                    sampleDownload = sampleDownload.copy(
+                        isPaused = !sampleDownload.isPaused,
+                        speedBytesPerSecond = if (sampleDownload.isPaused) 8400L * 1024 else 0L
+                    )
+                }
+            )
         }
     }
 }
