@@ -86,7 +86,17 @@ fun DownloadsScreen() {
                     download -> DownloadCard(
                         item = download,
                         onPauseResume = {
+                            val index = downloads.indexOfFirst {
+                                it.id == download.id
+                            }
 
+                            if (index != -1) {
+                                val currentDownload = downloads[index]
+                                downloads[index] = currentDownload.copy(
+                                    isPaused = !currentDownload.isPaused,
+                                    speedBytesPerSecond = if (currentDownload.isPaused) 8400L * 1024 else 0L
+                                )
+                            }
                         }
                     )
                 }
