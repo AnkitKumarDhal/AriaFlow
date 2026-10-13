@@ -50,11 +50,11 @@ fun DownloadsScreen() {
     }
 
     Surface(
-        modifier = Modifier.fillMaxSize().statusBarsPadding(),
+        modifier = Modifier.fillMaxSize(),
         color = PageBackground
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(horizontal = 18.dp, vertical = 12.dp),
+            modifier = Modifier.fillMaxSize().padding(horizontal = 18.dp, vertical = 12.dp).statusBarsPadding(),
             verticalArrangement = Arrangement.spacedBy(18.dp)
         ) {
             AppHeader()
