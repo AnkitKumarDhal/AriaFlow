@@ -74,7 +74,7 @@ fun DownloadsScreen() {
             verticalArrangement = Arrangement.spacedBy(18.dp)
         ) {
             AppHeader()
-            TransferOverview()
+            TransferOverview(downloads = downloads)
             LazyColumn(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(14.dp)
@@ -140,7 +140,21 @@ private fun AppHeader() {
 }
 
 @Composable
-private fun TransferOverview() {
+private fun TransferOverview(downloads: List<DownloadItem>) {
+    val activeDownloads = downloads.count {download ->
+        !download.isPaused && download.downloadedBytes < download.totalBytes
+    }
+
+    val totalSpeed = downloads.sumOf { download ->
+        if (!download.isPaused && download.downloadedBytes < download.totalBytes) {
+            download.speedBytesPerSecond
+        } else {
+            0L
+        }
+    }
+
+    val speedInMegabytes = totalSpeed / (1024.0 * 1024.0)
+
     Column(
         modifier = Modifier.fillMaxWidth().background(
             color = CardBackground,
@@ -148,7 +162,11 @@ private fun TransferOverview() {
         ).padding(24.dp)
     ) {
         Text(
-            text = "Downloading...",
+            text = if (activeDownloads > 0) {
+                "Downloading..."
+            } else {
+                "All caught up"
+            },
             color = PrimaryText,
             fontSize = 27.sp,
             fontWeight = FontWeight.Bold
@@ -160,7 +178,7 @@ private fun TransferOverview() {
             verticalAlignment = Alignment.Bottom
         ) {
             Text(
-                text = "12.5",
+                text = "%.1f".format(speedInMegabytes),
                 color = PrimaryText,
                 fontSize = 54.sp,
                 fontWeight = FontWeight.ExtraBold
@@ -176,7 +194,7 @@ private fun TransferOverview() {
         }
 
         Text(
-            text = "2 active downloads",
+            text = "$activeDownloads active downloads",
             color = SecondaryText,
             fontSize = 15.sp
         )
